@@ -9,37 +9,64 @@
     >
       <v-list dense>
         <v-list-item
-          v-for="item in items"
-          :key="item.text"
           link
         >
+          <v-list-item-avatar>
+            <img
+              :src="`https://randomuser.me/api/portraits/men/${profile.picture}.jpg`"
+              alt=""
+            >
+          </v-list-item-avatar>
+          <v-list-item-title v-text="profile.name" />
+        </v-list-item>
+
+        <hr>
+
+        <v-list-item
+          v-if="!loggedIn"
+          link
+          nuxt
+          to="/auth/signin"
+        >
           <v-list-item-action>
-            <v-icon>{{ item.icon }}</v-icon>
+            <v-icon>mdi-login</v-icon>
           </v-list-item-action>
           <v-list-item-content>
             <v-list-item-title>
-              {{ item.text }}
+              Sign In
             </v-list-item-title>
           </v-list-item-content>
         </v-list-item>
-        <v-subheader class="mt-4 grey--text text--darken-1">
-          SUBSCRIPTIONS
-        </v-subheader>
-        <v-list>
-          <v-list-item
-            v-for="item in items2"
-            :key="item.text"
-            link
-          >
-            <v-list-item-avatar>
-              <img
-                :src="`https://randomuser.me/api/portraits/men/${item.picture}.jpg`"
-                alt=""
-              >
-            </v-list-item-avatar>
-            <v-list-item-title v-text="item.text" />
-          </v-list-item>
-        </v-list>
+
+        <v-list-item
+          v-if="!loggedIn"
+          link
+        >
+          <v-list-item-action>
+            <v-icon>mdi-account-plus</v-icon>
+          </v-list-item-action>
+          <v-list-item-content>
+            <v-list-item-title>
+              Sign Up
+            </v-list-item-title>
+          </v-list-item-content>
+        </v-list-item>
+
+        <v-list-item
+          v-if="loggedIn"
+          link
+          @click="signOut()"
+        >
+          <v-list-item-action>
+            <v-icon>mdi-logout</v-icon>
+          </v-list-item-action>
+          <v-list-item-content>
+            <v-list-item-title>
+              Sign Out
+            </v-list-item-title>
+          </v-list-item-content>
+        </v-list-item>
+
         <v-list-item
           class="mt-4"
           link
@@ -80,7 +107,7 @@
         class="mx-4"
         large
       >
-        mdi-youtube
+        mdi-book
       </v-icon>
       <v-toolbar-title class="mr-12 align-center">
         <span class="title">{{ title }}</span>
@@ -112,25 +139,28 @@
 <script>
 export default {
   data: () => ({
-    title: 'Bookstore',
+    title: 'Stephan\'s Book Store',
     drawer: null,
-    items: [
-      { icon: 'mdi-trending-up', text: 'Most Popular' },
-      { icon: 'mdi-youtube-subscription', text: 'Subscriptions' },
-      { icon: 'mdi-history', text: 'History' },
-      { icon: 'mdi-playlist-play', text: 'Playlists' },
-      { icon: 'mdi-clock', text: 'Watch Later' }
-    ],
-    items2: [
-      { picture: 28, text: 'Joseph' },
-      { picture: 38, text: 'Apple' },
-      { picture: 48, text: 'Xbox Ahoy' },
-      { picture: 58, text: 'Nokia' },
-      { picture: 78, text: 'MKBHD' }
-    ]
+    profile: { picture: 28, name: 'Stephan' }
   }),
+  computed: {
+    loggedIn () {
+      return this.$auth.loggedIn
+    },
+    user () {
+      return this.$auth.user
+    }
+  },
   created () {
-    this.$vuetify.theme.dark = false
+    this.$vuetify.theme.dark = true
+  },
+  methods: {
+    async signOut () {
+      try {
+        await this.$auth.logout('local')
+      } catch (e) {
+      }
+    }
   }
 }
 </script>
