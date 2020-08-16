@@ -1,4 +1,3 @@
-import colors from 'vuetify/es5/util/colors'
 
 export default {
   mode: 'spa',
@@ -17,7 +16,6 @@ export default {
   },
   css: [
   ],
-  plugins: [],
   components: true,
   buildModules: [
     '@nuxtjs/eslint-module',
@@ -27,6 +25,9 @@ export default {
     '@nuxtjs/axios',
     '@nuxtjs/auth',
     '@nuxtjs/pwa'
+  ],
+  plugins: [
+    { src: '~/plugins/vuex-persist.js', ssr: false }
   ],
   publicRuntimeConfig: {
     axios: {
@@ -60,20 +61,14 @@ export default {
   },
   axios: {},
   vuetify: {
+    treeShake: true,
     customVariables: ['~/assets/variables.scss'],
-    theme: {
-      dark: true,
-      themes: {
-        dark: {
-          primary: colors.blue.darken2,
-          accent: colors.grey.darken3,
-          secondary: colors.amber.darken3,
-          info: colors.teal.lighten1,
-          warning: colors.amber.base,
-          error: colors.deepOrange.accent4,
-          success: colors.green.accent3
-        }
-      }
+    defaultAssets:
+    {
+      font: {
+        family: 'Inconsolata'
+      },
+      icons: 'fa'
     }
   },
   build: {

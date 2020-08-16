@@ -1,28 +1,87 @@
 <template>
-  <div>
-    <div>
-      <label>Email</label>
-      <input v-model="email" type="text">
-    </div>
-    <div>
-      <label>Password</label>
-      <input v-model="password" type="text">
-    </div>
-    <div>
-      <button @click="signIn()">
-        Sign In
-      </button>
-    </div>
-  </div>
+  <v-container
+    class="fill-height"
+    fluid
+  >
+    <v-row
+      align="center"
+      justify="center"
+    >
+      <v-col
+        xs="12"
+        sm="12"
+        md="6"
+        lg="6"
+        xl="6"
+      >
+        <v-card class="elevation-12">
+          <v-toolbar>
+            <v-toolbar-title>Sign In</v-toolbar-title>
+
+            <v-spacer />
+
+            <v-tooltip bottom>
+              <template v-slot:activator="{ on }">
+                <v-btn
+                  icon
+                  large
+                  v-on="on"
+                >
+                  <v-icon>{{ icons.signIn }}</v-icon>
+                </v-btn>
+              </template>
+              <span>Sign In</span>
+            </v-tooltip>
+          </v-toolbar>
+
+          <v-card-text>
+            <v-form>
+              <v-text-field
+                v-model="email"
+                label="Email"
+                name="email"
+                type="text"
+                outlined
+              />
+
+              <v-text-field
+                id="password"
+                v-model="password"
+                label="Password"
+                name="password"
+                type="password"
+                outlined
+              />
+            </v-form>
+          </v-card-text>
+
+          <v-card-actions class="justify-center">
+            <v-btn
+              @click="signIn()"
+            >
+              Sign In
+            </v-btn>
+          </v-card-actions>
+        </v-card>
+      </v-col>
+    </v-row>
+  </v-container>
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
+
 export default {
   data () {
     return {
       email: 'administrator@bookstore.co.za',
       password: '@Test1234'
     }
+  },
+  computed: {
+    ...mapGetters({
+      icons: 'getIcons'
+    })
   },
   methods: {
     async signIn () {
