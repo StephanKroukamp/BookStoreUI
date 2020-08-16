@@ -9,7 +9,7 @@
       sm8
       md6
     >
-      Create Book
+      {{ books }}
     </v-flex>
   </v-layout>
 </template>
@@ -17,5 +17,10 @@
 <script>
 
 export default {
+  async asyncData ({ $axios }) {
+    const { data } = await $axios.get('books')
+
+    return { books: data }
+  }
 }
 </script>

@@ -1,0 +1,30 @@
+{
+  "title": "Boek Winkel",
+  "navigation": {
+    "home": "Tuisblad",
+    "about": "Informasie",
+    "signin": "Teken In",
+    "signup": "Teken Op",
+    "signout": "Teken Uit",
+    "english": "Engelse weergawe",
+    "afrikaans": "Afrikaanse weergawe"
+  },
+  "settings": {
+    "language": "Taal"
+  },
+  "home": {
+    "title": "Welkom",
+    "introduction": "Hierdie is n voorstelling in Afrikaans"
+  },
+  "about": {
+    "title": "Informasie",
+    "introduction": "Die blad is geskep om jou meer informasie te gee."
+  },
+  "auth": {
+    "signin": {
+      "title": "Teken In",
+      "email": "E-Pos",
+      "password": "Wagwoord"
+    }
+  }
+}

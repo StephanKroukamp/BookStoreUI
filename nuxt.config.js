@@ -1,4 +1,3 @@
-
 export default {
   mode: 'spa',
   target: 'server',
@@ -26,8 +25,12 @@ export default {
     '@nuxtjs/auth',
     '@nuxtjs/pwa'
   ],
+  router: {
+    middleware: 'i18n'
+  },
   plugins: [
-    { src: '~/plugins/vuex-persist.js', ssr: false }
+    { src: '~/plugins/vuex-persist.js', ssr: false },
+    '~/plugins/i18n.js'
   ],
   publicRuntimeConfig: {
     axios: {
@@ -40,16 +43,19 @@ export default {
     }
   },
   auth: {
-    redirect: {
-      login: '/auth/signin',
-      logout: '/',
-      home: '/books'
-    },
     strategies: {
       local: {
         endpoints: {
-          login: { url: 'auth/signin', method: 'post', propertyName: 'token' },
-          user: { url: 'auth/user', method: 'get', propertyName: 'user' },
+          login: {
+            url: 'auth/signin',
+            method: 'post',
+            propertyName: 'token'
+          },
+          user: {
+            url: 'auth/user',
+            method: 'get',
+            propertyName: 'user'
+          },
           logout: false
         },
         tokenType: 'bearer',
@@ -57,7 +63,14 @@ export default {
         globalToken: true,
         autoFetchUser: true
       }
-    }
+    },
+    redirect: {
+      login: '/auth/signin',
+      logout: '/auth/signin',
+      callback: false,
+      home: '/'
+    },
+    plugins: ['~/plugins/auth-i18n-redirect.js']
   },
   axios: {},
   vuetify: {

@@ -1,5 +1,7 @@
 export const state = () => ({
-  useDarkTheme: false
+  useDarkTheme: false,
+  locales: ['en', 'af'],
+  locale: 'en'
 })
 
 export const mutations = {
@@ -9,11 +11,19 @@ export const mutations = {
     } else {
       state.useDarkTheme = true
     }
+  },
+  switchLocales (state, locale) {
+    if (state.locales.includes(locale)) {
+      state.locale = locale
+    }
   }
 }
 
 export const getters = {
   getUseDarkTheme: (state) => {
     return state.useDarkTheme
+  },
+  getLocales: (state) => {
+    return state.locales
   }
 }

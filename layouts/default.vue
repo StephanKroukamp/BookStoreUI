@@ -1,11 +1,8 @@
 <template>
-  <v-app
-    id="bookstore"
-  >
+  <v-app>
     <v-navigation-drawer
       ref="drawer"
       v-model="navigation.drawn"
-      :width="navigation.width"
       app
       clipped
     >
@@ -14,7 +11,7 @@
       >
         <v-list-item-content>
           <v-list-item-title class="d-flex justify-center title">
-            {{ title }}
+            {{ $t('title') }}
           </v-list-item-title>
         </v-list-item-content>
       </v-list-item>
@@ -43,14 +40,14 @@
           v-if="!loggedIn"
           link
           nuxt
-          to="/auth/signin"
+          :to="$i18n.path('auth/signin')"
         >
           <v-list-item-action>
             <v-icon>{{ icons.signIn }}</v-icon>
           </v-list-item-action>
           <v-list-item-content>
             <v-list-item-title>
-              Sign In
+              {{ $t('navigation.signin') }}
             </v-list-item-title>
           </v-list-item-content>
         </v-list-item>
@@ -64,7 +61,7 @@
           </v-list-item-action>
           <v-list-item-content>
             <v-list-item-title>
-              Sign Up
+              {{ $t('navigation.signup') }}
             </v-list-item-title>
           </v-list-item-content>
         </v-list-item>
@@ -79,9 +76,26 @@
           </v-list-item-action>
           <v-list-item-content>
             <v-list-item-title>
-              Sign Out
+              {{ $t('navigation.signout') }}
             </v-list-item-title>
           </v-list-item-content>
+        </v-list-item>
+
+        <v-divider />
+
+        <v-list-item>
+          <v-select
+            v-model="locale"
+            :items="availableLocales"
+            :item-text="'text'"
+            :item-value="'value'"
+            name="locale"
+            :label="$t('settings.language')"
+            menu-props="auto"
+            hide-details
+            single-line
+            dense
+          />
         </v-list-item>
 
         <v-divider />
@@ -114,7 +128,7 @@
       <v-toolbar-title
         class="align-center hidden-sm-and-down"
       >
-        <span class="title">{{ title }}</span>
+        <span class="title">{{ $t('title') }}</span>
       </v-toolbar-title>
     </v-app-bar>
 
@@ -132,20 +146,40 @@ import { mapGetters } from 'vuex'
 
 export default {
   data: () => ({
+    availableLocales: [
+      { text: 'English', value: 'en' },
+      { text: 'Afrikaans', value: 'af' }
+    ],
     title: 'Book Store',
     navigation: {
-      drawn: false,
-      width: 256,
-      borderSize: 3
+      drawn: false
     }
   }),
   computed: {
     ...mapGetters({
       icons: 'getIcons',
-      useDarkTheme: 'navigation/getUseDarkTheme'
+      locales: 'persistent/getLocales',
+      useDarkTheme: 'persistent/getUseDarkTheme'
     }),
-    direction () {
-      return this.navigation.shown === false ? 'Open' : 'Closed'
+    locale: {
+      get () {
+        return this.$store.state.persistent.locale
+      },
+      set (val) {
+        if (this.$store.state.persistent.locale === val) {
+          return
+        }
+
+        let path
+
+        if (val === 'en') {
+          path = '/' + val + this.$route.fullPath.replace(/^\/[^\/]+/, '')
+        } else {
+          path = '/' + val + this.$route.fullPath
+        }
+
+        this.$router.push(path)
+      }
     },
     loggedIn () {
       return this.$auth.loggedIn
@@ -156,61 +190,12 @@ export default {
   },
   mounted () {
     this.$vuetify.theme.dark = this.useDarkTheme
-
-    this.setBorderWidth()
-
-    this.setEvents()
   },
   methods: {
     toggleDarkTheme () {
-      this.$store.commit('navigation/toggleUseDarkTheme')
+      this.$store.commit('persistent/toggleUseDarkTheme')
 
       this.$vuetify.theme.dark = this.useDarkTheme
-    },
-    setBorderWidth () {
-      const i = this.$refs.drawer.$el.querySelector(
-        '.v-navigation-drawer__border'
-      )
-      i.style.width = this.navigation.borderSize + 'px'
-      i.style.cursor = 'ew-resize'
-    },
-    setEvents () {
-      const minSize = this.navigation.borderSize
-      const el = this.$refs.drawer.$el
-      const drawerBorder = el.querySelector('.v-navigation-drawer__border')
-      const vm = this
-      const direction = el.classList.contains('v-navigation-drawer--right')
-        ? 'right'
-        : 'left'
-
-      function resize (e) {
-        document.body.style.cursor = 'ew-resize'
-        const f = direction === 'right'
-          ? document.body.scrollWidth - e.clientX
-          : e.clientX
-        el.style.width = f + 'px'
-      }
-
-      drawerBorder.addEventListener(
-        'mousedown',
-        function (e) {
-          if (e.offsetX < minSize) {
-            el.style.transition = 'initial'; document.addEventListener('mousemove', resize, false)
-          }
-        },
-        false
-      )
-
-      document.addEventListener(
-        'mouseup',
-        function () {
-          el.style.transition = ''
-          vm.navigation.width = el.style.width
-          document.body.style.cursor = ''
-          document.removeEventListener('mousemove', resize, false)
-        },
-        false
-      )
     },
     async signOut () {
       try {

@@ -4,6 +4,7 @@ export const state = () => ({
     signUp: 'fa-user-plus',
     signOut: 'fa-sign-out-alt',
     theme: 'fa-adjust',
+    language: 'fa-language',
     search: 'fa-search'
   }
 })

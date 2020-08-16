@@ -1,0 +1,30 @@
+{
+  "title": "Book Store",
+  "navigation": {
+    "home": "Home",
+    "about": "About",
+    "signin": "Sign In",
+    "signup": "Sign Up",
+    "signout": "Sign Out",
+    "english": "English version",
+    "afrikaans": "Afrikaans version"
+  },
+  "settings": {
+    "language": "Language"
+  },
+  "home": {
+    "title": "Welcome",
+    "introduction": "This is an introduction in English."
+  },
+  "about": {
+    "title": "About",
+    "introduction": "This page is made to give you more information."
+  },
+  "auth": {
+    "signin": {
+      "title": "Sign In",
+      "email": "Email",
+      "password": "Password"
+    }
+  }
+}
