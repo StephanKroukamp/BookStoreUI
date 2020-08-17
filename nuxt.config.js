@@ -1,8 +1,6 @@
 import colors from 'vuetify/lib/util/colors'
 
 export default {
-  mode: 'spa',
-  target: 'server',
   head: {
     titleTemplate: '%s - ' + process.env.npm_package_name,
     title: process.env.npm_package_name || '',
@@ -38,13 +36,13 @@ export default {
     '@nuxtjs/auth',
     '@nuxtjs/pwa'
   ],
-  router: {
-    middleware: 'i18n'
-  },
   plugins: [
     { src: '~/plugins/vuex-persist.js', ssr: false },
     '~/plugins/i18n.js'
   ],
+  router: {
+    middleware: 'i18n'
+  },
   publicRuntimeConfig: {
     axios: {
       browserBaseURL: process.env.BROWSER_BASE_URL
@@ -82,8 +80,7 @@ export default {
       logout: '/auth/signin',
       callback: false,
       home: '/'
-    },
-    plugins: ['~/plugins/auth-i18n-redirect.js']
+    }
   },
   axios: {},
   vuetify: {

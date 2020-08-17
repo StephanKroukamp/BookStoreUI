@@ -40,7 +40,7 @@
           v-if="!loggedIn"
           link
           nuxt
-          :to="$i18n.path('auth/signin')"
+          :to="`/auth/signin?lang=${this.locale}`"
         >
           <v-list-item-action>
             <v-icon>{{ icons.signIn }}</v-icon>
@@ -165,20 +165,10 @@ export default {
       get () {
         return this.$store.state.persistent.locale
       },
-      set (val) {
-        if (this.$store.state.persistent.locale === val) {
-          return
-        }
+      set (lang) {
+        this.$store.commit('persistent/switchLocales', lang)
 
-        let path
-
-        if (val === 'en') {
-          path = '/' + val + this.$route.fullPath.replace(/^\/[^\/]+/, '')
-        } else {
-          path = '/' + val + this.$route.fullPath
-        }
-
-        this.$router.push(path)
+        this.$router.push({ path: `${this.$router.currentRoute.path}?lang=${lang}` })
       }
     },
     loggedIn () {
