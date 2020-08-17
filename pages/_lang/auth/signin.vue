@@ -14,7 +14,10 @@
         lg="6"
         xl="6"
       >
-        <v-card class="elevation-12">
+        <v-card
+          :loading="loading"
+          class="elevation-12"
+        >
           <v-toolbar>
             <v-toolbar-title>{{ $t('auth.signin.title') }}</v-toolbar-title>
 
@@ -74,6 +77,7 @@ import { mapGetters } from 'vuex'
 export default {
   data () {
     return {
+      loading: false,
       email: 'administrator@bookstore.co.za',
       password: '@Test1234'
     }
@@ -85,6 +89,8 @@ export default {
   },
   methods: {
     async signIn () {
+      this.loading = true
+
       try {
         await this.$auth.loginWith('local', {
           data: {
@@ -94,6 +100,8 @@ export default {
         })
       } catch (e) {
       }
+
+      this.loading = false
     }
   },
   head () {

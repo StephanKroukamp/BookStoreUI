@@ -1,3 +1,5 @@
+import colors from 'vuetify/lib/util/colors'
+
 export default {
   mode: 'spa',
   target: 'server',
@@ -15,6 +17,17 @@ export default {
   },
   css: [
   ],
+  loading: {
+    color: '#1976D2',
+    height: '5px',
+    duration: 500,
+    continuous: true
+  },
+  loadingIndicator: {
+    name: 'rectangle-bounce',
+    color: '#1976D2',
+    background: 'white'
+  },
   components: true,
   buildModules: [
     '@nuxtjs/eslint-module',
@@ -76,6 +89,16 @@ export default {
   vuetify: {
     treeShake: true,
     customVariables: ['~/assets/variables.scss'],
+    theme: {
+      themes: {
+        light: {
+          primary: colors.blue.darken2
+        },
+        dark: {
+          primary: colors.blue.darken2
+        }
+      }
+    },
     defaultAssets:
     {
       font: {
